@@ -143,3 +143,49 @@ int decompress(struct uploadData *data, unsigned char *buffer)
     free(writer.buffer);
     return errors;
 }
+
+// Convert uploadData struct to string
+// We assume buf is filled and data is allocated.
+void uploadData_to_string(char* data, struct uploadData *buf)
+{
+    memcpy(data, buf, sizeof(struct uploadData));
+}
+
+// Convert string to uploadData struct
+// We assume data is filled and buf is allocated
+void string_to_uploadData(struct uploadData *buf, char* data)
+{
+    memcpy(buf, data, sizeof(struct uploadData));
+}
+
+// Wrapper function that can get the raw bytes of the decompressed buffer
+int decompress_data(char* data, unsigned char* buffer)
+{
+    struct uploadData *data_struct = (struct uploadData*)malloc(sizeof(struct uploadData));
+    int ret = decompress(data_struct, buffer);
+    if(ret != 0) return ret;
+    
+    uploadData_to_string(data, data_struct);
+
+    return 0;
+}
+
+// Print a (presumably binary) string as a byte array
+void print_string_as_bytearray(unsigned char* data, int len)
+{
+    for(int i = 0; i < len; i++)
+    {
+        printf("%.2x", data[i]);
+    }
+    printf("\n");
+}
+
+// Print uploadData as a byte array
+void print_uploadData_as_bytearray(struct uploadData* buf)
+{
+    int len = sizeof(struct uploadData);
+    char* data = (char*)malloc(len);
+    uploadData_to_string(data, buf);
+
+    print_string_as_bytearray((unsigned char*)data, len);
+}
