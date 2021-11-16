@@ -206,7 +206,7 @@ void print_string_as_bytearray(char* data, int len)
 void print_uploadData_as_bytearray(struct uploadData* buf)
 {
     int len = sizeof(struct uploadData);
-    char* data = malloc(len);
+    char* data = (char*)malloc(len);
     uploadData_to_string(data, buf);
 
     for(int i = 0; i < len; i++)
@@ -218,7 +218,7 @@ void print_uploadData_as_bytearray(struct uploadData* buf)
 
 int main (int argc, char **argv)
 {
-    struct uploadData* data = malloc(sizeof(struct uploadData));
+    struct uploadData* data = (struct uploadData*)malloc(sizeof(struct uploadData));
     data->avg_hum = 153.447;
     data->avg_temp = 52.677;
     data->bc = 10;
@@ -235,54 +235,54 @@ int main (int argc, char **argv)
     data->ts[5] = 'p';
     data->ts[6] = 'p';
     data->ts[7] = 'y';
-    data->serialNum[0] = 'A';
-    data->serialNum[1] = 'B';
-    data->serialNum[2] = 'C';
-    data->serialNum[3] = 'D';
-    data->serialNum[4] = 'E';
+    strcpy(data->serialNum, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
 
-    printf("Raw\n");
+    printf("Raw:\n");
     print_uploadData_as_bytearray(data);
+    printf("\n");
     
     int maxbits = 16; // configure the maximum symbol size (9-16)
-    int buffer_size = sizeof(struct uploadData);
-    unsigned char buffer[buffer_size];
-    if(compress(&data, buffer, buffer_size, maxbits))
+    char* buffer = (char*)malloc(sizeof(struct uploadData));
+    if(compress(data, (unsigned char*)buffer, sizeof(struct uploadData), maxbits))
         return 1;
-    printf("Data compression is finifshed.\n");
+    printf("Data compression is finifshed.\n\n");
 
     printf("Compressed:\n");
     print_string_as_bytearray(buffer, sizeof(struct uploadData));
+    printf("\n");
     
-    struct uploadData de_data;
-    memset (&de_data, 0, sizeof (de_data));
-    if(decompress(&de_data, buffer))
+    struct uploadData* de_data = (struct uploadData*)malloc(sizeof(struct uploadData));
+    if(decompress(de_data, (unsigned char*)buffer))
         return 1;
-    printf("Data decompression is finifshed.\n");
+    printf("Data decompression is finifshed.\n\n");
+
+    printf("Decompressed:\n");
+    print_uploadData_as_bytearray(de_data);
+    printf("\n");
     
-    printf("avg_hum: %E\n",de_data.avg_hum);
-    printf("avg_press: %E\n",de_data.avg_press);
-    printf("avg_temp: %E\n",de_data.avg_temp);
-    printf("scd30_ppm: %E\n",de_data.scd30_ppm);
+    printf("avg_hum: %E\n",de_data->avg_hum);
+    printf("avg_press: %E\n",de_data->avg_press);
+    printf("avg_temp: %E\n",de_data->avg_temp);
+    printf("scd30_ppm: %E\n",de_data->scd30_ppm);
     printf("pm2_5[3]: ");
     for(int i=0;i<3;i++){
-        printf("%d",de_data.pm2_5[i]);
+        printf("%d",de_data->pm2_5[i]);
     }
     printf("\n");
     printf("pm10[3]: ");
     for(int i=0;i<3;i++){
-        printf("%d",de_data.pm10[i]);
+        printf("%d",de_data->pm10[i]);
     }
     printf("\n");
-    printf("pv: %E\n",de_data.pv);
-    printf("pc: %E\n",de_data.pc);
-    printf("pp: %E\n",de_data.pp);
-    printf("bv: %d\n",de_data.bv);
-    printf("bc: %d\n",de_data.bc);
-    printf("bt: %d\n",de_data.bt);
-    printf("gps[20]: %s\n",de_data.gps);
-    printf("ts[21]: %s\n",de_data.ts);
-    printf("tz[4]: %s\n",de_data.tz);
-    printf("serialNum[33]: %c\n",de_data.serialNum[32]);//printf("serialNum[33]: %s\n",de_data.serialNum);
+    printf("pv: %E\n",de_data->pv);
+    printf("pc: %E\n",de_data->pc);
+    printf("pp: %E\n",de_data->pp);
+    printf("bv: %d\n",de_data->bv);
+    printf("bc: %d\n",de_data->bc);
+    printf("bt: %d\n",de_data->bt);
+    printf("gps[20]: %s\n",de_data->gps);
+    printf("ts[21]: %s\n",de_data->ts);
+    printf("tz[4]: %s\n",de_data->tz);
+    printf("serialNum[33]: %c\n",de_data->serialNum[32]);//printf("serialNum[33]: %s\n",de_data->serialNum);
     return 0;
 }
