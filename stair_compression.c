@@ -166,27 +166,83 @@ int decompress(struct uploadData *data, unsigned char *buffer)
     return errors;
 }
 
+// Convert uploadData struct to string
+// We assume buf is filled and data is allocated.
+void uploadData_to_string(char* data, struct uploadData *buf)
+{
+    memcpy(data, buf, sizeof(struct uploadData));
+}
+
+// Convert string to uploadData struct
+// We assume data is filled and buf is allocated
+void string_to_uploadData(struct uploadData *buf, char* data)
+{
+    memcpy(buf, data, sizeof(struct uploadData));
+}
+
+// Wrapper function that can get the raw bytes of the decompressed buffer
+int decompress_data(char* data, unsigned char* buffer)
+{
+    struct uploadData *data_struct = (struct uploadData*)malloc(sizeof(struct uploadData));
+    int ret = decompress(data_struct, buffer);
+    if(ret != 0) return ret;
+    
+    uploadData_to_string(data, data_struct);
+
+    return 0;
+}
+
+// Print a (presumably binary) string as a byte array
+void print_string_as_bytearray(char* data, int len)
+{
+    for(int i = 0; i < len; i++)
+    {
+        printf("%.2x", data[i]);
+    }
+    printf("\n");
+}
+
+// Print uploadData as a byte array
+void print_uploadData_as_bytearray(struct uploadData* buf)
+{
+    int len = sizeof(struct uploadData);
+    char* data = malloc(len);
+    uploadData_to_string(data, buf);
+
+    for(int i = 0; i < len; i++)
+    {
+        printf("%.2x", data[i]);
+    }
+    printf("\n");
+}
+
 int main (int argc, char **argv)
 {
-    struct uploadData data;
-    memset (&data, 0, sizeof (data));
-    data.avg_hum = 153.447;
-    data.avg_temp = 52.677;
-    data.bc = 10;
-    data.bv = 25;
-    data.pm10[0] = 1;
-    data.pm10[1] = 2;
-    data.pm10[2] = 3;
-    data.scd30_ppm = 0.1112;
-    data.ts[0] = 'B';
-    data.ts[1] = 'e';
-    data.ts[2] = ' ';
-    data.ts[3] = 'h';
-    data.ts[4] = 'a';
-    data.ts[5] = 'p';
-    data.ts[6] = 'p';
-    data.ts[7] = 'y';
-    data.serialNum[32] = 'e';
+    struct uploadData* data = malloc(sizeof(struct uploadData));
+    data->avg_hum = 153.447;
+    data->avg_temp = 52.677;
+    data->bc = 10;
+    data->bv = 25;
+    data->pm10[0] = 1;
+    data->pm10[1] = 2;
+    data->pm10[2] = 3;
+    data->scd30_ppm = 0.1112;
+    data->ts[0] = 'B';
+    data->ts[1] = 'e';
+    data->ts[2] = ' ';
+    data->ts[3] = 'h';
+    data->ts[4] = 'a';
+    data->ts[5] = 'p';
+    data->ts[6] = 'p';
+    data->ts[7] = 'y';
+    data->serialNum[0] = 'A';
+    data->serialNum[1] = 'B';
+    data->serialNum[2] = 'C';
+    data->serialNum[3] = 'D';
+    data->serialNum[4] = 'E';
+
+    printf("Raw\n");
+    print_uploadData_as_bytearray(data);
     
     int maxbits = 16; // configure the maximum symbol size (9-16)
     int buffer_size = sizeof(struct uploadData);
@@ -194,6 +250,9 @@ int main (int argc, char **argv)
     if(compress(&data, buffer, buffer_size, maxbits))
         return 1;
     printf("Data compression is finifshed.\n");
+
+    printf("Compressed:\n");
+    print_string_as_bytearray(buffer, sizeof(struct uploadData));
     
     struct uploadData de_data;
     memset (&de_data, 0, sizeof (de_data));
