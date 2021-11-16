@@ -1,2 +1,5 @@
 lzwtester.out
 stair_compression.out
+raw.txt
+compressed.txt
+decompressed.txt
