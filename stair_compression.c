@@ -240,6 +240,10 @@ int main (int argc, char **argv)
     printf("Raw:\n");
     print_uploadData_as_bytearray(data);
     printf("\n");
+
+    FILE* fp = fopen("raw.txt", "wb");
+    fwrite(data, sizeof(struct uploadData), 1, fp);
+    fclose(fp);
     
     int maxbits = 16; // configure the maximum symbol size (9-16)
     char* buffer = (char*)malloc(sizeof(struct uploadData));
@@ -250,6 +254,10 @@ int main (int argc, char **argv)
     printf("Compressed:\n");
     print_string_as_bytearray(buffer, sizeof(struct uploadData));
     printf("\n");
+
+    fp = fopen("compressed.txt", "wb");
+    fwrite(buffer, sizeof(struct uploadData), 1, fp);
+    fclose(fp);
     
     struct uploadData* de_data = (struct uploadData*)malloc(sizeof(struct uploadData));
     if(decompress(de_data, (unsigned char*)buffer))
@@ -259,6 +267,10 @@ int main (int argc, char **argv)
     printf("Decompressed:\n");
     print_uploadData_as_bytearray(de_data);
     printf("\n");
+
+    fp = fopen("decompressed.txt", "wb");
+    fwrite(de_data, sizeof(struct uploadData), 1, fp);
+    fclose(fp);
     
     printf("avg_hum: %E\n",de_data->avg_hum);
     printf("avg_press: %E\n",de_data->avg_press);
