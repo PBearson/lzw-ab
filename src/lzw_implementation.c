@@ -146,7 +146,7 @@ int decompress(struct uploadData *data, unsigned char *buffer)
 
 // Convert uploadData struct to string
 // We assume buf is filled and data is allocated.
-void uploadData_to_string(char* data, struct uploadData *buf)
+void uploadData_to_string(unsigned char* data, struct uploadData *buf)
 {
     memcpy(data, buf, sizeof(struct uploadData));
 }
@@ -159,7 +159,7 @@ void string_to_uploadData(struct uploadData *buf, char* data)
 }
 
 // Wrapper function that can get the raw bytes of the decompressed buffer
-int decompress_data(char* data, unsigned char* buffer)
+int decompress_data(unsigned char* data, unsigned char* buffer)
 {
     struct uploadData *data_struct = (struct uploadData*)malloc(sizeof(struct uploadData));
     int ret = decompress(data_struct, buffer);
@@ -184,8 +184,16 @@ void print_string_as_bytearray(unsigned char* data, int len)
 void print_uploadData_as_bytearray(struct uploadData* buf)
 {
     int len = sizeof(struct uploadData);
-    char* data = (char*)malloc(len);
+    unsigned char* data = (unsigned char*)malloc(len);
     uploadData_to_string(data, buf);
 
     print_string_as_bytearray((unsigned char*)data, len);
+}
+
+void bytearray_to_bin(unsigned char* bin, char* buffer, int len)
+{
+    for(int i = 0; i < len; i++)
+    {
+        sscanf((const char*)buffer+(i*2), "%2hhx", &bin[i]);
+    }
 }
