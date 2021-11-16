@@ -46,7 +46,7 @@ typedef struct {
 
 static int read_buff (void *ctx)
 {
-    streamer *stream = ctx;
+    streamer *stream = (streamer*)ctx;
 
     if (stream->index == stream->size)
         return EOF;
@@ -56,7 +56,7 @@ static int read_buff (void *ctx)
 
 static void write_buff (int value, void *ctx)
 {
-    streamer *stream = ctx;
+    streamer *stream = (streamer*)ctx;
 
     // for fuzz testing, randomly corrupt 1 byte in every 65536 (on average)
 
@@ -80,7 +80,7 @@ static void write_buff (int value, void *ctx)
 
 static void check_buff (int value, void *ctx)
 {
-    streamer *stream = ctx;
+    streamer *stream = (streamer*)ctx;
 
     if (stream->index == stream->size) {
         stream->wrapped++;
@@ -199,9 +199,9 @@ int main (int argc, char **argv)
             continue;
         }
 
-        file_buffer = malloc (file_size);
+        file_buffer = (unsigned char*)malloc (file_size);
         writer.size = (unsigned int)(file_size * 2 + 10);
-        writer.buffer = malloc (writer.size);
+        writer.buffer = (unsigned char*)malloc (writer.size);
 
         if (!file_buffer || !writer.buffer) {
             printf ("\nfile %s is too big!\n", filename);

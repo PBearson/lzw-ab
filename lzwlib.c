@@ -166,7 +166,7 @@ int lzw_compress (void (*dst)(int,void*), void *dstctx, int (*src)(void*), void 
     // based on the "maxbits" parameter, compute total codes and allocate dictionary storage
 
     total_codes = 1 << maxbits;
-    dictionary = malloc (total_codes * sizeof (encoder_entry_t));
+    dictionary = (encoder_entry_t*)malloc (total_codes * sizeof (encoder_entry_t));
     max_available_entries = total_codes - FIRST_STRING - 1;
     max_available_code = total_codes - 2;
 
@@ -356,9 +356,9 @@ int lzw_decompress (void (*dst)(int,void*), void *dstctx, int (*src)(void*), voi
 
     total_codes = 512 << (read_byte & 0x7);
     max_available_code = total_codes - 2;
-    dictionary = malloc (total_codes * sizeof (decoder_entry_t));
-    reverse_buffer = malloc (total_codes - 256);
-    referenced = malloc (total_codes / 8);  // bitfield indicating code is referenced at least once
+    dictionary = (decoder_entry_t*)malloc (total_codes * sizeof (decoder_entry_t));
+    reverse_buffer = (unsigned char*)malloc (total_codes - 256);
+    referenced = (unsigned char*)malloc (total_codes / 8);  // bitfield indicating code is referenced at least once
 
     // Note that to implement the dictionary entry recycling we have to keep track of how many
     // longer strings are based on each string in the dictionary. This can be between 0 (no
