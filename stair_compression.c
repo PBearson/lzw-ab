@@ -193,7 +193,7 @@ int decompress_data(char* data, unsigned char* buffer)
 }
 
 // Print a (presumably binary) string as a byte array
-void print_string_as_bytearray(char* data, int len)
+void print_string_as_bytearray(unsigned char* data, int len)
 {
     for(int i = 0; i < len; i++)
     {
@@ -209,11 +209,7 @@ void print_uploadData_as_bytearray(struct uploadData* buf)
     char* data = (char*)malloc(len);
     uploadData_to_string(data, buf);
 
-    for(int i = 0; i < len; i++)
-    {
-        printf("%.2x", data[i]);
-    }
-    printf("\n");
+    print_string_as_bytearray((unsigned char*)data, len);
 }
 
 int main (int argc, char **argv)
@@ -252,7 +248,7 @@ int main (int argc, char **argv)
     printf("Data compression is finifshed.\n\n");
 
     printf("Compressed:\n");
-    print_string_as_bytearray(buffer, sizeof(struct uploadData));
+    print_string_as_bytearray((unsigned char*)buffer, sizeof(struct uploadData));
     printf("\n");
 
     fp = fopen("compressed.txt", "wb");
