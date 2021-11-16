@@ -1,5 +1,4 @@
-lzwtester.out
-stair_compression.out
+*.out
 raw.txt
 compressed.txt
 decompressed.txt
