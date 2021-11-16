@@ -29,7 +29,7 @@ typedef struct {
 /* function provided by author*/
 static int read_buff (void *ctx)
 {
-    streamer *stream = ctx;
+    streamer *stream = (streamer*)ctx;
     
     if (stream->index == stream->size){
         return EOF;
@@ -41,7 +41,7 @@ static int read_buff (void *ctx)
 /* function provided by author*/
 static void write_buff (int value, void *ctx)
 {
-    streamer *stream = ctx;
+    streamer *stream = (streamer*)ctx;
     
     if (stream->index == stream->size) {
         stream->index = 0;
@@ -68,10 +68,10 @@ int compress(struct uploadData *data, unsigned char *buffer, int buffer_size, in
         return errors;
     }
     
-    reader.buffer = malloc(struct_size);
+    reader.buffer = (unsigned char*)malloc(struct_size);
     reader.size = (unsigned int)struct_size;
     writer.size = (unsigned int)struct_size;
-    writer.buffer = malloc (writer.size);
+    writer.buffer = (unsigned char*)malloc (writer.size);
     
     if (!writer.buffer || !reader.buffer) {
         printf ("\nstruct is too big!\n");
@@ -132,7 +132,7 @@ int decompress(struct uploadData *data, unsigned char *buffer)
     reader.buffer = buffer;
     reader.size = (unsigned int)struct_size;
     writer.size = (unsigned int)(struct_size*2 + 10);
-    writer.buffer = malloc (writer.size);
+    writer.buffer = (unsigned char*)malloc (writer.size);
     
     if (!writer.buffer || !reader.buffer) {
         printf ("\nstruct is too big!\n");
