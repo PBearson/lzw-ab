@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdint.h>
 #ifndef uploadData_h
 #define uploadData_h
