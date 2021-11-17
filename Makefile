@@ -25,7 +25,7 @@ stair_compression: $(LZW_IMPL_DEPS) $(SRC)/stair_compression.c
 test_decompression_raw_decoded: $(LZW_IMPL_DEPS) $(TESTS)/test_decompression_raw_decoded.c
 	$(BUILD_CMD)
 
-test_decompression_raw_encoded: $(LZW_IMPL_DEPS) $(TESTS)/test_decompression_raw_encoded.c
+test_decompression_raw_encoded: $(LZW_IMPL_DEPS) $(SRC)/base64.c $(TESTS)/test_decompression_raw_encoded.c 
 	$(BUILD_CMD)
 
 clean:
