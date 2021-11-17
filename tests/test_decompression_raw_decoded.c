@@ -12,6 +12,7 @@ int main()
     FILE* fp = fopen("inputs/test_raw_decoded_compressed", "r");
     unsigned char* input = (unsigned char*)malloc(len);
     fread(input, len, 1, fp);
+    fclose(fp);
 
     unsigned char* decompressed = (unsigned char*)malloc(len);
     int ret = decompress_data(decompressed, input);
