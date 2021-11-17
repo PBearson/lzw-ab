@@ -10,7 +10,7 @@ int main()
     int len = sizeof(struct uploadData);
 
     FILE* fp = fopen("inputs/test_raw_decoded_compressed", "r");
-    char* input = malloc(len);
+    unsigned char* input = (unsigned char*)malloc(len);
     fread(input, len, 1, fp);
 
     unsigned char* decompressed = (unsigned char*)malloc(len);
