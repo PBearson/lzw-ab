@@ -153,7 +153,7 @@ void uploadData_to_string(unsigned char* data, struct uploadData *buf)
 
 // Convert string to uploadData struct
 // We assume data is filled and buf is allocated
-void string_to_uploadData(struct uploadData *buf, char* data)
+void string_to_uploadData(struct uploadData *buf, unsigned char* data)
 {
     memcpy(buf, data, sizeof(struct uploadData));
 }
