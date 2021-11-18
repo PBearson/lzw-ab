@@ -19,6 +19,13 @@ int main(int argc, char* argv[1])
 
     cJSON *json = cJSON_Parse(input_json);
 
+    if(json == NULL || json->child == NULL || json->child->valuestring == NULL)
+    {
+        printf("JSON parsing failure\n");
+        return -1;
+    }
+    printf("JSON parsing succeeded\n");
+    
     char* input_encoded = json->child->valuestring;
 
     int decoded_len = b64_decoded_size(input_encoded);
