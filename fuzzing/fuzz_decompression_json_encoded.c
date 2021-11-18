@@ -29,6 +29,13 @@ int main(int argc, char* argv[1])
     char* input_encoded = json->child->valuestring;
 
     int decoded_len = b64_decoded_size(input_encoded);
+
+    if(decoded_len == 0)
+    {
+        printf("Decode length cannot be 0\n");
+        return -1;
+    }
+
     unsigned char* input_decoded = (unsigned char*)malloc(decoded_len);
 
     int ret = b64_decode(input_encoded, input_decoded, decoded_len);
