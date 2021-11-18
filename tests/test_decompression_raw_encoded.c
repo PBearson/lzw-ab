@@ -12,7 +12,7 @@ int main()
 
     FILE* fp = fopen("inputs/test_raw_encoded_compressed", "r");
     const char* input_encoded = (const char*)malloc(1024);
-    fread(input_encoded, 1024, 1, fp);
+    fread((char*)input_encoded, 1024, 1, fp);
     fclose(fp);
 
     int decoded_len = b64_decoded_size(input_encoded);
