@@ -6,9 +6,11 @@ INCLUDE ?= include
 BUILD_CMD ?= $(CC) $(CFLAGS) -I $(INCLUDE) -o $@.out $?
 
 SRC_TARGETS ?= lzwtester stair_compression
-TEST_TARGETS ?= test_decompression_raw_decoded test_decompression_raw_encoded
+TEST_TARGETS ?= test_decompression_raw_decoded test_decompression_raw_encoded test_decompression_json_encoded
 
 LZW_IMPL_DEPS ?= $(SRC)/lzwlib.c $(SRC)/lzw_implementation.c
+
+CJSON_DEPS ?= /home/ubuntu/Documents/cJSON/cJSON.c
 
 default: $(SRC_TARGETS)
 
@@ -26,6 +28,9 @@ test_decompression_raw_decoded: $(LZW_IMPL_DEPS) $(TESTS)/test_decompression_raw
 	$(BUILD_CMD)
 
 test_decompression_raw_encoded: $(LZW_IMPL_DEPS) $(SRC)/base64.c $(TESTS)/test_decompression_raw_encoded.c 
+	$(BUILD_CMD)
+
+test_decompression_json_encoded: $(LZW_IMPL_DEPS) $(CJSON_DEPS) $(SRC)/base64.c $(TESTS)/test_decompression_json_encoded.c
 	$(BUILD_CMD)
 
 clean:
