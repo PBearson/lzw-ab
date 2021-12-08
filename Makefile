@@ -16,7 +16,7 @@ LZW_IMPL_DEPS ?= $(SRC)/lzwlib.c $(SRC)/lzw_implementation.c
 
 CJSON_DEPS ?= /home/ubuntu/Documents/cJSON/cJSON.c
 
-default: $(SRC_TARGETS)
+default: all
 
 tests: $(TEST_TARGETS)
 
