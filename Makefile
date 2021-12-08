@@ -9,7 +9,7 @@ BUILD_CMD ?= mkdir -p $(BIN_DIR); $(CC) $(CFLAGS) -I $(INCLUDE) -o $(BIN_DIR)/$@
 BIN_DIR ?= bin
 
 SRC_TARGETS ?= lzwtester stair_compression
-TEST_TARGETS ?= test_decompression_raw_decoded test_decompression_raw_encoded test_decompression_json_encoded
+TEST_TARGETS ?= test_decompression_raw_decoded test_decompression_raw_encoded test_decompression_json_encoded test_decompression_raw_encoded_revised
 FUZZING_TARGETS ?= fuzz_decompression_json_encoded
 
 LZW_IMPL_DEPS ?= $(SRC)/lzwlib.c $(SRC)/lzw_implementation.c
@@ -38,6 +38,9 @@ test_decompression_raw_encoded: $(LZW_IMPL_DEPS) $(SRC)/base64.c $(TESTS)/test_d
 
 test_decompression_json_encoded: $(LZW_IMPL_DEPS) $(CJSON_DEPS) $(SRC)/base64.c $(TESTS)/test_decompression_json_encoded.c
 	$(BUILD_CMD)
+
+test_decompression_raw_encoded_revised: $(LZW_IMPL_DEPS) $(CJSON_DEPS) $(SRC)/base64.c $(TESTS)/test_decompression_raw_encoded_revised.c
+	$(BUILD_CMD) -D DATA_STRUCT_V2
 
 fuzz_decompression_json_encoded: $(LZW_IMPL_DEPS) $(CJSON_DEPS) $(SRC)/base64.c $(FUZZING)/fuzz_decompression_json_encoded.c
 	$(BUILD_CMD)

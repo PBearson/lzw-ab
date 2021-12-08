@@ -25,10 +25,22 @@ struct uploadData
     //uint32_t dVal;  //d
     //uint32_t dCnt;  //cnt
     
+    #ifndef DATA_STRUCT_V2
+
     char gps[20];  //L
     char ts[21];  //ts
     char tz[4];   //TZ
     char serialNum[33]; //uid
+
+    #else
+
+    float lat;
+    float lng;
+    char timestamp[12];  //ts
+    int8_t timezone;
+    char serialNum[16]; //uid
+
+    #endif
 };
 
 #endif /* uploadData_h */
