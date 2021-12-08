@@ -36,8 +36,8 @@ struct uploadData
 
     float lat;
     float lng;
-    char timestamp[12];  //ts
-    int8_t timezone;
+    char ts[12];  //ts
+    int8_t tz;
     char serialNum[16]; //uid
 
     #endif
