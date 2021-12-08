@@ -38,9 +38,8 @@ int main()
     struct uploadData* decompressed_struct = (struct uploadData*)malloc(struct_len);
     string_to_uploadData(decompressed_struct, decompressed);
 
-    char gps_string[20];
-
     // Convert GPS
+    char gps_string[28];
     sprintf(gps_string, "%f,%f", decompressed_struct->lat, decompressed_struct->lng);
     gps_string[19] = 0;
 
