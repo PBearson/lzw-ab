@@ -45,7 +45,7 @@ int main()
     gps_string[27] = 0;
 
     // Convert timestamp
-    time_t ts = 1639165587;//decompressed_struct->ts;
+    time_t ts = decompressed_struct->ts;
     struct tm lt = *gmtime(&ts);
     char ts_string[21];
     strftime(ts_string, 21, "%Y-%m-%dT%H:%M:%SZ", &lt);
