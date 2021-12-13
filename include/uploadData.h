@@ -36,7 +36,7 @@ struct uploadData
 
     float lat;
     float lng;
-    char ts[12];  //ts
+    int ts;  //ts
     int8_t tz;
     char serialNum[16]; //uid
 

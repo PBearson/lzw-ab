@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <time.h>
 #include "base64.h"
 
 int main()
@@ -41,35 +42,13 @@ int main()
     // Convert GPS
     char gps_string[28];
     sprintf(gps_string, "%f,%f", decompressed_struct->lat, decompressed_struct->lng);
-    gps_string[19] = 0;
+    gps_string[27] = 0;
 
     // Convert timestamp
-    char year_string[5] = "20";
-    strncpy(year_string + 2, decompressed_struct->ts, 2);
-    year_string[4] = 0;
-
-    char month_string[3];
-    strncpy(month_string, decompressed_struct->ts + 2, 2);
-    month_string[2] = 0;
-
-    char day_string[3];
-    strncpy(day_string, decompressed_struct->ts + 4, 2);
-    day_string[2] = 0;
-
-    char hour_string[3];
-    strncpy(hour_string, decompressed_struct->ts + 6, 2);
-    hour_string[2] = 0;
-
-    char minute_string[3];
-    strncpy(minute_string, decompressed_struct->ts + 8, 2);
-    minute_string[2] = 0;
-
-    char second_string[3];
-    strncpy(second_string, decompressed_struct->ts + 10, 2);
-    second_string[2] = 0;
-
+    time_t ts = 1639165587;//decompressed_struct->ts;
+    struct tm lt = *gmtime(&ts);
     char ts_string[21];
-    sprintf(ts_string, "%s-%s-%sT%s:%s:%sZ", year_string, month_string, day_string, hour_string, minute_string, second_string);
+    strftime(ts_string, 21, "%Y-%m-%dT%H:%M:%SZ", &lt);
     ts_string[20] = 0;
 
     // Convert tz
