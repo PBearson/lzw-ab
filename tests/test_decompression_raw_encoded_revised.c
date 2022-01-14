@@ -70,9 +70,7 @@ int main()
     uid_string[32] = 0;
     
     printf("t1: %f\n", decompressed_struct->avg_temp);
-    printf("p1: %f\n", decompressed_struct->avg_press);
     printf("h1: %f\n", decompressed_struct->avg_hum);
-    printf("c1: %f\n", decompressed_struct->scd30_ppm);
     printf("P251: %d\n", decompressed_struct->pm2_5[0]);
     printf("P252: %d\n", decompressed_struct->pm2_5[1]);
     printf("P253: %d\n", decompressed_struct->pm2_5[2]);
@@ -81,10 +79,8 @@ int main()
     printf("P103: %d\n", decompressed_struct->pm10[2]);
     printf("pv: %f\n", decompressed_struct->pv);
     printf("pc: %f\n", decompressed_struct->pc);
-    printf("pp: %f\n", decompressed_struct->pp);
     printf("bv: %d\n", decompressed_struct->bv);
     printf("bc: %d\n", decompressed_struct->bv);
-    printf("pt: %d\n", decompressed_struct->bt);
     printf("L: %s\n", gps_string);
     printf("ts: %s\n", ts_string);
     printf("TZ: %s\n", tz_string);
