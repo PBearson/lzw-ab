@@ -24,6 +24,12 @@ int main(int argc, char* argv[])
 
     cJSON *json = cJSON_Parse(input_json);
 
+    if(json == NULL || json->child == NULL)
+    {
+        printf("JSON parse failure\n");
+        return -1;
+    }
+
     char* input_key = json->child->string;
     char* input_encoded = json->child->valuestring;
     
@@ -66,7 +72,7 @@ int main(int argc, char* argv[])
 
     // Convert GPS
     char gps_string[28];
-    sprintf(gps_string, "%f,%f", decompressed_struct->lat, decompressed_struct->lng);
+    snprintf(gps_string, 28, "%.6f,%.6f", decompressed_struct->lat, decompressed_struct->lng);
     gps_string[27] = 0;
 
     // Convert timestamp
@@ -78,7 +84,7 @@ int main(int argc, char* argv[])
 
     // Convert tz
     char tz_string[4];
-    sprintf(tz_string, "%d", decompressed_struct->tz);
+    snprintf(tz_string, 4, "%d", decompressed_struct->tz);
     tz_string[3] = 0;
 
     // Convert UID
