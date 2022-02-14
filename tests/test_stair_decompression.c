@@ -32,6 +32,12 @@ int main(int argc, char* argv[])
 
     char* input_key = json->child->string;
     char* input_encoded = json->child->valuestring;
+
+    if(input_key == NULL || input_encoded == NULL)
+    {
+        printf("JSON input has the wrong format\n");
+        return -1;
+    }
     
     int decoded_len = b64_decoded_size(input_encoded);
     unsigned char* input_decoded = (unsigned char*)malloc(decoded_len);
