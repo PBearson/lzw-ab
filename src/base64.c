@@ -74,6 +74,12 @@ int b64_decode(const char *in, unsigned char *out, size_t outlen)
 		return 0;
 
 	len = strlen(in);
+
+	if(len * 3 / 4 - 2 > outlen)
+	{
+		return 0;
+	}
+
 	if (outlen < b64_decoded_size(in) || len % 4 != 0)
 		return 0;
 
