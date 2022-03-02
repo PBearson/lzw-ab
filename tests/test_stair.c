@@ -50,39 +50,16 @@ int main(int argc, char* argv[])
     }
     printf("Decode succeeded\n");
 
-    unsigned char* decompressed;
-
-    if(strcmp(input_key, "d") == 0)
-    {
-        decompressed = (unsigned char*)malloc(struct_len);
-        ret = decompress_data(decompressed, input_decoded);
-        if(ret != 0)
-        {
-            printf("Decompression failed\n");
-            return -1;
-        }
-        printf("Decompression succeeded.\n");
-    }
-    else if(strcmp(input_key, "r") == 0)
-    {
-        decompressed = input_decoded;
-    }
-    else
-    {
-        printf("I don't recognize the JSON key\n");
-        exit(1);
-    }
-
-    struct uploadData* decompressed_struct = (struct uploadData*)malloc(struct_len);
-    string_to_uploadData(decompressed_struct, decompressed);
+    struct uploadData* decoded_structed = (struct uploadData*)malloc(struct_len);
+    string_to_uploadData(decoded_structed, input_decoded);
 
     // Convert GPS
     char gps_string[28];
-    snprintf(gps_string, 28, "%.6f,%.6f", decompressed_struct->lat, decompressed_struct->lng);
+    snprintf(gps_string, 28, "%.6f,%.6f", decoded_structed->lat, decoded_structed->lng);
     gps_string[27] = 0;
 
     // Convert timestamp
-    time_t ts = decompressed_struct->ts;
+    time_t ts = decoded_structed->ts;
     struct tm lt = *gmtime(&ts);
     char ts_string[21];
     strftime(ts_string, 21, "%Y-%m-%dT%H:%M:%SZ", &lt);
@@ -90,7 +67,7 @@ int main(int argc, char* argv[])
 
     // Convert tz
     char tz_string[4];
-    snprintf(tz_string, 4, "%d", decompressed_struct->tz);
+    snprintf(tz_string, 4, "%d", decoded_structed->tz);
     tz_string[3] = 0;
 
     // Convert UID
@@ -99,25 +76,21 @@ int main(int argc, char* argv[])
     for(int i = 0; i < 32; i+=2)
     {
         unsigned char tmp[2];
-        memcpy(tmp, decompressed_struct->serialNum + j, 1);
+        memcpy(tmp, decoded_structed->serialNum + j, 1);
 
         sprintf(uid_string+i, "%.2X", tmp[0]);
         j++;
     }
     uid_string[32] = 0;
     
-    printf("t1: %f\n", decompressed_struct->avg_temp);
-    printf("h1: %f\n", decompressed_struct->avg_hum);
-    printf("P251: %d\n", decompressed_struct->pm2_5[0]);
-    printf("P252: %d\n", decompressed_struct->pm2_5[1]);
-    printf("P253: %d\n", decompressed_struct->pm2_5[2]);
-    printf("P101: %d\n", decompressed_struct->pm10[0]);
-    printf("P102: %d\n", decompressed_struct->pm10[1]);
-    printf("P103: %d\n", decompressed_struct->pm10[2]);
-    printf("pv: %f\n", decompressed_struct->pv);
-    printf("pc: %f\n", decompressed_struct->pc);
-    printf("bv: %d\n", decompressed_struct->bv);
-    printf("bc: %d\n", decompressed_struct->bv);
+    printf("t1: %f\n", decoded_structed->avg_temp);
+    printf("h1: %f\n", decoded_structed->avg_hum);
+    printf("P251: %d\n", decoded_structed->pm2_5[0]);
+    printf("P252: %d\n", decoded_structed->pm2_5[1]);
+    printf("P253: %d\n", decoded_structed->pm2_5[2]);
+    printf("P101: %d\n", decoded_structed->pm10[0]);
+    printf("P102: %d\n", decoded_structed->pm10[1]);
+    printf("P103: %d\n", decoded_structed->pm10[2]);
     printf("L: %s\n", gps_string);
     printf("ts: %s\n", ts_string);
     printf("TZ: %s\n", tz_string);

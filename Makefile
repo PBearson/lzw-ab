@@ -7,7 +7,7 @@ BUILD_CMD ?= mkdir -p $(BIN_DIR); $(CC) $(CFLAGS) -I $(INCLUDE) -o $(BIN_DIR)/$@
 
 BIN_DIR ?= bin
 
-TEST_TARGETS ?= test_stair_decompression
+TEST_TARGETS ?= test_stair
 
 LZW_IMPL_DEPS ?= $(SRC)/lzwlib.c $(SRC)/lzw_implementation.c
 
@@ -21,7 +21,7 @@ tests: $(TEST_TARGETS)
 
 all: $(TEST_TARGETS)
 
-test_stair_decompression: $(LZW_IMPL_DEPS) $(CJSON_DEPS) $(BASE64_DEPS) $(TESTS)/test_stair_decompression.c
+test_stair: $(LZW_IMPL_DEPS) $(CJSON_DEPS) $(BASE64_DEPS) $(TESTS)/test_stair.c
 	$(BUILD_CMD)
 
 clean:
