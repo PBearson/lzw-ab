@@ -11,7 +11,7 @@ TEST_TARGETS ?= test_stair_decompression
 
 LZW_IMPL_DEPS ?= $(SRC)/lzwlib.c $(SRC)/lzw_implementation.c
 
-CJSON_DEPS ?= /home/ubuntu/Documents/cJSON/cJSON.c
+CJSON_DEPS ?= ./cJSON/cJSON.c
 
 BASE64_DEPS ?= $(SRC)/base64.c
 
